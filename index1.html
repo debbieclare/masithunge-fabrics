@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masithunge Fabrics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background-color: #faf7f4;
+        color: #333;
+      }
+      header {
+        background: #2f2a25;
+        color: #fff;
+        padding: 1.2rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header h1 {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 20px;
+        letter-spacing: 1px;
+        font-style: italic;
+      }
+      .logo {
+        height: 50px;
+        width: auto;
+      }
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 1.5rem;
+        font-size: 0.95rem;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding: 3rem 2rem;
+        align-items: center;
+      }
+      .hero-text h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+      }
+      .hero-text p {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+      .hero-text button {
+        background: #2f2a25;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+      }
+      .hero-image {
+        position: relative;
+        height: 450px;
+      }
+      .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+      .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        font-size: 2rem;
+        padding: 0.2rem 0.7rem;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .slider-btn.prev {
+        left: 10px;
+      }
+      .slider-btn.next {
+        right: 10px;
+      }
+      .slider-btn:hover {
+        background: rgba(0, 0, 0, 0.7);
+      }
+      section {
+        padding: 3rem 2rem;
+      }
+      section h3 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+      }
+      .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+      }
+      .product-card {
+        background: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      .product-image {
+        overflow: hidden;
+      }
+      .product-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+        cursor: zoom-in;
+      }
+      .product-card:hover .product-image img {
+        transform: scale(1.3);
+      }
+      .product-info {
+        padding: 1rem;
+      }
+      .product-info h4 {
+        margin-bottom: 0.5rem;
+      }
+      .product-info p {
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
+      }
+      .product-info span {
+        font-weight: 600;
+      }
+      .about {
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
+        line-height: 1.7;
+      }
+      footer {
+        background: #2f2a25;
+        color: #fff;
+        padding: 1.5rem 2rem;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          display: none;
+        }
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 2rem 0;
+      }
+      .modal-content {
+        background: #fff;
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 900px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2f2a25;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .close-btn:hover {
+        color: #555;
+      }
+
+      .modal-products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+
+      .modal-products .product-card {
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        cursor: pointer;
+      }
+
+      .modal-products .product-card:hover {
+        transform: scale(1.05);
+      }
+
+      .modal-products .product-image img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .modal-products .product-info {
+        padding: 0.8rem;
+        text-align: center;
+      }
+
+      .modal-products .product-info h4 {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .modal-products .product-info p {
+        font-size: 0.85rem;
+        color: #555;
+      }
+
+      .modal-content img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+
+      .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 3rem;
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .lightbox-close:hover {
+        color: #ccc;
+      }
+
+      .contactus {
+        text-align: center;
+        font-weight: bold;
+      }
+      .email {
+        color: white;
+        text-decoration: none;
+      }
+      .email:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <img src="images/logo.png" alt="logo" class="logo" />
+        <span>Masithunge Fabrics</span>
+      </h1>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#products">Fabrics</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-text">
+        <h2>Quality Fabrics for Every Creation</h2>
+        <p>
+          Masithunge Fabrics offers beautiful, high-quality fabrics perfect for
+          fashion, tailoring, and creative projects.
+        </p>
+        <button onclick="openShopModal()">Shop Fabrics</button>
+      </div>
+      <div class="hero-image">
+        <img id="sliderImage" src="images/sarong3.jpg" alt="Fabric preview" />
+        <button class="slider-btn prev" onclick="prevImage()">‹</button>
+        <button class="slider-btn next" onclick="nextImage()">›</button>
+      </div>
+    </section>
+
+    <div id="shopModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeShopModal()">&times;</span>
+        <h2 style="text-align: center; margin-bottom: 1rem">Our Fabrics</h2>
+        <div class="modal-products">
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong1.jpg" alt="Fabric 1" />
+            </div>
+            <div class="product-info">
+              <h4>MF100001</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong2.jpg" alt="Fabric 2" />
+            </div>
+            <div class="product-info">
+              <h4>MF100002</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong3.jpg" alt="Fabric 3" />
+            </div>
+            <div class="product-info">
+              <h4>MF100003</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong4.jpg" alt="Fabric 4" />
+            </div>
+            <div class="product-info">
+              <h4>MF100004</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong5.jpg" alt="Fabric 5" />
+            </div>
+            <div class="product-info">
+              <h4>MF100005</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong6.jpg" alt="Fabric 6" />
+            </div>
+            <div class="product-info">
+              <h4>MF100006</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong7.jpg" alt="Fabric 7" />
+            </div>
+            <div class="product-info">
+              <h4>MF100007</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong8.jpg" alt="Fabric 8" />
+            </div>
+            <div class="product-info">
+              <h4>MF100008</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong9.jpg" alt="Fabric 9" />
+            </div>
+            <div class="product-info">
+              <h4>MF100009</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong10.jpg" alt="Fabric 10" />
+            </div>
+            <div class="product-info">
+              <h4>MF100010</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong11.jpg" alt="Fabric 11" />
+            </div>
+            <div class="product-info">
+              <h4>MF100011</h4>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong12.jpg" alt="Fabric 12" />
+            </div>
+            <div class="product-info">
+              <h4>MF100012</h4>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong13.jpg" alt="Fabric 13" />
+            </div>
+            <div class="product-info">
+              <h4>MF100013</h4>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong14.jpg" alt="Fabric 14" />
+            </div>
+            <div class="product-info">
+              <h4>MF100014</h4>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong15.jpg" alt="Fabric 15" />
+            </div>
+            <div class="product-info">
+              <h4>MF100015</h4>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong16.jpg" alt="Fabric 16" />
+            </div>
+            <div class="product-info">
+              <h4>MF100016</h4>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong17.jpg" alt="Fabric 17" />
+            </div>
+            <div class="product-info">
+              <h4>MF100017</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="shopModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeShopModal()">&times;</span>
+        <div class="modal-products">
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong1.jpg" alt="Fabric 1" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 1</h4>
+              <p>Description 1</p>
+              <span>R100 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong2.jpg" alt="Fabric 2" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 2</h4>
+              <p>Description 2</p>
+              <span>R110 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong3.jpg" alt="Fabric 3" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 3</h4>
+              <p>Description 3</p>
+              <span>R120 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong4.jpg" alt="Fabric 4" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 4</h4>
+              <p>Description 4</p>
+              <span>R90 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong5.jpg" alt="Fabric 5" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 5</h4>
+              <p>Description 5</p>
+              <span>R95 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong6.jpg" alt="Fabric 6" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 6</h4>
+              <p>Description 6</p>
+              <span>R105 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong7.jpg" alt="Fabric 7" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 7</h4>
+              <p>Description 7</p>
+              <span>R110 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong8.jpg" alt="Fabric 8" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 8</h4>
+              <p>Description 8</p>
+              <span>R115 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong9.jpg" alt="Fabric 9" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 9</h4>
+              <p>Description 9</p>
+              <span>R120 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong10.jpg" alt="Fabric 10" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 10</h4>
+              <p>Description 10</p>
+              <span>R125 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong11.jpg" alt="Fabric 11" />
+            </div>
+            <div class="product-info">
+              <h4>Fabric 11</h4>
+              <p>Description 11</p>
+              <span>R130 / meter</span>
+            </div>
+          </div>
+        </div>
+        <h3>Our Fabrics</h3>
+        <div class="products">
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong11.jpg" alt="Ankara Print" />
+            </div>
+            <div class="product-info">
+              <h4>Java Fabric</h4>
+              <p>Bright and bold African-inspired fabric.</p>
+              <span>R120 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong4.jpg" alt="Cotton Fabric" />
+            </div>
+            <div class="product-info">
+              <h4>Cotton Fabric</h4>
+              <p>Soft, breathable cotton for daily wear.</p>
+              <span>R90 / meter</span>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-image">
+              <img src="images/sarong7.jpg" alt="Shweshwe" />
+            </div>
+            <div class="product-info">
+              <h4>Shweshwe</h4>
+              <p>Traditional fabric with rich heritage.</p>
+              <span>R110 / meter</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="products">
+      <h3>Our Fabrics</h3>
+      <div class="products">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="images/sarong13.jpg" alt="Ankara Print" />
+          </div>
+          <div class="product-info">
+            <h4>Java Fabric</h4>
+            <p>Bright and bold African-inspired fabric.</p>
+            <span>5.5 meters</span>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <img src="images/sarong15.jpg" alt="Cotton Fabric" />
+          </div>
+          <div class="product-info">
+            <h4>Cotton Fabric</h4>
+            <p>Soft, breathable cotton for daily wear.</p>
+            <span>5.5 meters</span>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <img src="images/sarong17.jpg" alt="Shweshwe" />
+          </div>
+          <div class="product-info">
+            <h4>Wax Fabric</h4>
+            <p>Traditional fabric with rich heritage.</p>
+            <span>5.5 meters</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <h3>About Masithunge</h3>
+      <div class="about">
+        <p>
+          Masithunge Fabrics is passionate about providing quality materials
+          that inspire creativity. Whether you're a designer, tailor, or DIY
+          enthusiast, we have fabrics that bring your ideas to life.
+          <br />
+        </p>
+      </div>
+    </section>
+    <p class="contactus">
+      <br />
+      Contact: info@masithunge.co.za| Instagram: @masithungefabrics | Call: 063
+      920 4168
+    </p>
+    <br />
+    <footer id="contact">
+      <p>
+        © 2026 Masithunge Fabrics | Powered and Developed by
+        <a href="mailto:hlakaniphilesoftware@gmail.com" class="email"
+          >Hlakaniphile Software</a
+        >
+        <br />
+        <br />
+        Contact: info@masithunge.co.za| Instagram: @masithungefabrics | Call:
+        063 920 4168
+      </p>
+    </footer>
+    <div id="lightbox" class="lightbox">
+      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+      <img id="lightbox-img" src="" alt="Fabric Large View" />
+    </div>
+
+    <script>
+      const images = [
+        "images/sarong1.jpg",
+        "images/sarong2.jpg",
+        "images/sarong9.jpg",
+        "images/sarong5.jpg",
+        "images/sarong4.jpg",
+        "images/sarong11.jpg",
+      ];
+      let currentIndex = 0;
+      const sliderImage = document.getElementById("sliderImage");
+      let autoSlideInterval;
+
+      function showImage(index) {
+        sliderImage.src = images[index];
+      }
+      function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+        resetAutoSlide();
+      }
+      function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+        resetAutoSlide();
+      }
+
+      function startAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % images.length;
+          showImage(currentIndex);
+        }, 4000);
+      }
+      function pauseAutoSlide() {
+        clearInterval(autoSlideInterval);
+      }
+      function resetAutoSlide() {
+        pauseAutoSlide();
+        startAutoSlide();
+      }
+
+      const heroImage = document.querySelector(".hero-image");
+      heroImage.addEventListener("mouseenter", pauseAutoSlide);
+      heroImage.addEventListener("mouseleave", startAutoSlide);
+      startAutoSlide();
+
+      const modal = document.getElementById("shopModal");
+      function openShopModal() {
+        modal.style.display = "block";
+      }
+      function closeShopModal() {
+        modal.style.display = "none";
+      }
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          closeShopModal();
+        }
+      };
+
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+
+      document
+        .querySelectorAll(".modal-products .product-image img")
+        .forEach((img) => {
+          img.addEventListener("click", () => {
+            lightbox.style.display = "flex";
+            lightboxImg.src = img.src;
+          });
+        });
+
+      function closeLightbox() {
+        lightbox.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
